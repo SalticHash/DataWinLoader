@@ -6,7 +6,7 @@ using UndertaleModLib;
 namespace DataWinLoad.Utils {
     internal class Objects {
         public static UndertaleGameObject? AddObject(UndertaleData data, Types.Object objectRef) {
-            Console.WriteLine($"Adding Object that with name / id {objectRef.name}");
+            Console.WriteLine($"Adding Object that with name {objectRef.name}");
 
             var name = data.Strings.MakeString(objectRef.name);
 
@@ -29,10 +29,27 @@ namespace DataWinLoad.Utils {
             ObjectInst.Persistent = objectRef.persistent;
             ObjectInst.Solid = objectRef.solid;
 
-            AddEvents(data, ObjectInst, objectRef);
 
             if (!exists)
                 data.GameObjects.Add(ObjectInst);
+
+            return ObjectInst;
+        }
+
+        public static UndertaleGameObject? AddObjectEvents(UndertaleData data, Types.Object objectRef) {
+            Console.WriteLine($"Adding Object Events that with name {objectRef.name}");
+
+
+            UndertaleGameObject ObjectInst = data.GameObjects.ByName(objectRef.name);
+            bool exists = ObjectInst != null;
+            if (!exists) {
+                Console.WriteLine("ERROR");
+                return null;
+            }
+
+
+            AddEvents(data, ObjectInst, objectRef);
+
 
             return ObjectInst;
         }

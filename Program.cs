@@ -98,14 +98,19 @@ namespace DataWinLoad {
 
                 skipImageProccesing:
 
+                // Add and load objects
+                foreach (var obj in json?.objects) {
+                    Objects.AddObject(data, obj);
+                }
+
                 // Add and load scripts
                 foreach (var script in json?.scripts) {
                     Scripts.AddScript(data, script);
                 }
 
-                // Add and load objects
+                // Add and load object events
                 foreach (var obj in json?.objects) {
-                    Objects.AddObject(data, obj);
+                    Objects.AddObjectEvents(data, obj);
                 }
 
 
