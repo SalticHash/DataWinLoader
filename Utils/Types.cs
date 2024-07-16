@@ -46,8 +46,9 @@ namespace DataWinLoad.Utils {
         public static Tuple<EventType, uint> GetEventType(UndertaleData data, string eventName, string? subtypeName) {
             switch (eventName) {
                 case "other":
-                case "step":
                     return MkTupl(EventTypes[eventName], (uint)OtherSubtypes[subtypeName]);
+                case "step":
+                    return MkTupl(EventTypes[eventName], (uint)StepSubtypes[subtypeName]);
                 case "collision":
                     UndertaleGameObject obj = data.GameObjects.ByName(subtypeName);
                     uint objId = (uint) data.GameObjects.IndexOf(obj);
