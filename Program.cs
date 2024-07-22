@@ -15,7 +15,6 @@ using System.Diagnostics;
 namespace DataWinLoad {
     internal class DataWinLoad {
 
-        static public UndertaleData? ogData;
         static public UndertaleData? data;
 
         static public string? workingDir;
@@ -43,6 +42,14 @@ namespace DataWinLoad {
             config = new ConfigurationBuilder()
                 .AddIniFile("config.ini", true)
                 .Build();
+
+            // Kill game procces
+            if (config["gamePath"] != null) {
+                var name = Path.GetFileNameWithoutExtension(config["gamePath"]);
+                foreach (var process in Process.GetProcessesByName(name)) {
+                    process.Kill();
+                }
+            }
 
             // Warn dev mode
             if (config["devMode"] == "true") {
@@ -78,30 +85,31 @@ namespace DataWinLoad {
             workingDir = json?.workingDir;
 
             // Load data
-            ogData = Data.LoadData(json?.dataPath);
-            if (ogData == null) return;
+            data = Data.LoadData(json?.dataPath);
+            if (data == null) return;
 
+
+
+            // Add and load textures
+            if (json?.textures == null) goto skipImageProccesing;
+            foreach (var texture in json?.textures) {
+                Sprites.AddTexture(data, texture);
+            }
+
+            // Add and load sprites
+            if (json?.sprites == null) goto skipImageProccesing;
+            foreach (var sprite in json?.sprites) {
+                Sprites.AddSprite(data, sprite);
+            }
+
+            skipImageProccesing:
+
+            // Add and load objects
+            foreach (var obj in json?.objects) {
+                Objects.AddObject(data, obj);
+            }
 
             while (true) {
-                data = ogData;
-                // Add and load textures
-                if (json?.textures == null) goto skipImageProccesing;
-                foreach (var texture in json?.textures) {
-                    Sprites.AddTexture(data, texture);
-                }
-
-                // Add and load sprites
-                if (json?.sprites == null) goto skipImageProccesing;
-                foreach (var sprite in json?.sprites) {
-                    Sprites.AddSprite(data, sprite);
-                }
-
-                skipImageProccesing:
-
-                // Add and load objects
-                foreach (var obj in json?.objects) {
-                    Objects.AddObject(data, obj);
-                }
 
                 // Add and load scripts
                 foreach (var script in json?.scripts) {
@@ -123,6 +131,7 @@ namespace DataWinLoad {
                         break;
                     }
                     if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Spacebar) {
+                        Data.SaveData(json?.outputDataPath, data);
                         continue;
                     }
                 } else {
@@ -138,6 +147,12 @@ namespace DataWinLoad {
             // Benchmark
             stopwatch.Stop();
             Console.WriteLine($"\n {stopwatch.Elapsed}");
+
+            // Start game if game path
+            if (config["gamePath"] != null) {
+                var game = new ProcessStartInfo(config["gamePath"]);
+                Process.Start(game);
+            }
         }
     }
 }

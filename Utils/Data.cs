@@ -53,7 +53,9 @@ namespace DataWinLoad.Utils {
 
             stopwatch.Stop();
 
-            Console.WriteLine($"Saving took {stopwatch.Elapsed}");
+            Console.WriteLine($"Saving took {stopwatch.Elapsed}, Press \"Any\" key to continue");
+
+            //Console.ReadKey();
         }
     }
 }

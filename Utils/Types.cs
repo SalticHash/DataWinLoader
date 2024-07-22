@@ -60,6 +60,7 @@ namespace DataWinLoad.Utils {
             ["create"] = EventType.Create,
             ["collision"] = EventType.Collision,
             ["alarm"] = EventType.Alarm,
+            ["draw"] = EventType.Draw,
             ["other"] = EventType.Other,
             ["step"] = EventType.Step,
         };
