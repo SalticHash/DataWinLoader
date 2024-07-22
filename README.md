@@ -81,3 +81,9 @@ Now you can have your files separated and just load them in with a JSON file.
   ]
 }
 ```
+
+## Building
+1. Build UndertaleModLib and get the .nupkg file
+1. Open in Visual Studio
+1. Add it to the dependencies
+1. Build
