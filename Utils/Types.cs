@@ -53,7 +53,12 @@ namespace DataWinLoad.Utils {
                     UndertaleGameObject obj = data.GameObjects.ByName(subtypeName);
                     uint objId = (uint) data.GameObjects.IndexOf(obj);
                     return MkTupl(EventType.Collision, objId);
-                default: return MkTupl(EventTypes[eventName], 0);
+                default:
+                    uint subid = 0;
+                    if (subtypeName != null)
+                        _ = uint.TryParse(subtypeName, out subid);
+                    
+                    return MkTupl(EventTypes[eventName], subid);
             }
         }
         public static Dictionary<string, EventType> EventTypes = new() {
