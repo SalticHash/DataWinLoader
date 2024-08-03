@@ -9,11 +9,13 @@ using UndertaleModLib.Models;
 namespace DataWinLoad.Utils {
     internal class Scripts {
         public static UndertaleCode? AddScript(UndertaleData data, Types.Script script) {
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Adding Script with name {script.name}");
             var name = data.Strings.MakeString(script.name);
             var path = Path.GetFullPath(script.path, DataWinLoad.workingDir);
 
             if (!File.Exists(path)) {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Code not found at path \"{path}\"");
                 return null;
             }
@@ -35,10 +37,17 @@ namespace DataWinLoad.Utils {
                 }
             }
 
-            if (script.append == true) {
-                code.AppendGML(gml, data);
-            } else {
-                code.ReplaceGML(gml, data);
+            Console.ForegroundColor = ConsoleColor.Red;
+            try {
+                if (script.append == true) {
+                    code.AppendGML(gml, data);
+                } else {
+                    code.ReplaceGML(gml, data);
+                }
+            } catch (Exception ex) {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
+                return null;
             }
 
 

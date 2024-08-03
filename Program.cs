@@ -28,12 +28,20 @@ namespace DataWinLoad {
         static public IConfigurationRoot? config;
 
         static void Main(string[] args) {
+            // Handling unhandled errors, are they unhandled anymore?
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) => {
+                Exception ex = (Exception)e.ExceptionObject;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Unhandled exception: " + ex.Message);
+            };
+
             // Load or create the config.ini
             string exeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string exeDirectory = Path.GetDirectoryName(exeFilePath);
 
             string iniPath = Path.Combine(exeDirectory, "config.ini");
             if (!File.Exists(iniPath)) {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Please re-run, config file was created.");
                 File.Create(iniPath);
                 return;
@@ -53,6 +61,7 @@ namespace DataWinLoad {
 
             // Warn dev mode
             if (config["devMode"] == "true") {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("DevMode Active, the main loop will repeat if you press the enter or space key");
                 Console.WriteLine("after the execution of the saving, you can exit by pressing 'X'");
             }
@@ -65,13 +74,16 @@ namespace DataWinLoad {
 
             // Get json path
             if (config["jsonPath"] == null) {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("Enter the path to the json: ");
                 jsonPath = Console.ReadLine();
                 if (jsonPath == null) {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Input for path failed");
                     return;
                 };
             } else {
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine($"Used preset json path: \"{config["jsonPath"]}\" (set in config.ini)");
                 jsonPath = config["jsonPath"];
             }
@@ -125,6 +137,7 @@ namespace DataWinLoad {
                 // Dev mode management
                 if (config["devMode"] == "true") {
                     var key = Console.ReadKey();
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"{key.KeyChar}");
                     if (key.Key == ConsoleKey.X) {
                         Console.WriteLine("Exited loop.");
@@ -146,14 +159,20 @@ namespace DataWinLoad {
 
             // Benchmark
             stopwatch.Stop();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"\n {stopwatch.Elapsed}");
 
             // Start game if game path
             if (config["gamePath"] != null) {
                 var game = new ProcessStartInfo(config["gamePath"]);
                 Process.Start(game);
+            } else {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\nPress any key to close...");
+                Console.ReadKey();
             }
         }
     }
 }
+
 

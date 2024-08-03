@@ -89,12 +89,12 @@ namespace DataWinLoad.Utils {
 
         public struct Object {
             public string name { get; set; }
-            public string parent { get; set; }
-            public string spriteName { get; set; }
-            public bool visible { get; set; }
-            public bool persistent { get; set; }
-            public bool solid { get; set; }
-            public List<Event> events { get; set; }
+            public string? parent { get; set; }
+            public string? spriteName { get; set; }
+            public bool? visible { get; set; }
+            public bool? persistent { get; set; }
+            public bool? solid { get; set; }
+            public List<Event>? events { get; set; }
         }
 
         public struct BuildJSON {

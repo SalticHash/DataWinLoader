@@ -6,15 +6,19 @@ using UndertaleModLib;
 namespace DataWinLoad.Utils {
     internal class Objects {
         public static UndertaleGameObject? AddObject(UndertaleData data, Types.Object objectRef) {
-            Console.WriteLine($"Adding Object that with name {objectRef.name}");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"Adding Object \"{objectRef.name}\"");
 
             var name = data.Strings.MakeString(objectRef.name);
 
-            UndertaleGameObject parentID;
-            parentID = data.GameObjects.ByName(objectRef.parent);
+            UndertaleGameObject? parentID = null;
+            if (objectRef.parent != null)
+                parentID = data.GameObjects.ByName(objectRef.parent);
+            
 
-            UndertaleSprite sprite;
-            sprite = data.Sprites.ByName(objectRef.spriteName);
+            UndertaleSprite? sprite = null;
+            if (objectRef.spriteName != null)
+                sprite = data.Sprites.ByName(objectRef.spriteName);
 
             
             UndertaleGameObject ObjectInst = data.GameObjects.ByName(objectRef.name);
@@ -22,12 +26,16 @@ namespace DataWinLoad.Utils {
             ObjectInst ??= new();
 
             ObjectInst.Name = name;
-            ObjectInst.ParentId = parentID;
-            ObjectInst.Sprite = sprite;
-            ObjectInst.Visible = objectRef.visible;
-
-            ObjectInst.Persistent = objectRef.persistent;
-            ObjectInst.Solid = objectRef.solid;
+            if (parentID != null)
+                ObjectInst.ParentId = parentID;
+            if (sprite != null)
+                ObjectInst.Sprite = sprite;
+            if (objectRef.visible != null)
+                ObjectInst.Visible = (bool) objectRef.visible;
+            if (objectRef.persistent != null)
+                ObjectInst.Persistent = (bool) objectRef.persistent;
+            if (objectRef.solid != null)
+                ObjectInst.Solid = (bool) objectRef.solid;
 
 
             if (!exists)
@@ -37,13 +45,15 @@ namespace DataWinLoad.Utils {
         }
 
         public static UndertaleGameObject? AddObjectEvents(UndertaleData data, Types.Object objectRef) {
-            Console.WriteLine($"Adding Object Events that with name {objectRef.name}");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"Adding Object Events of \"{objectRef.name}\"");
 
 
-            UndertaleGameObject ObjectInst = data.GameObjects.ByName(objectRef.name);
-            bool exists = ObjectInst != null;
-            if (!exists) {
-                Console.WriteLine("ERROR");
+            UndertaleGameObject? ObjectInst = data.GameObjects.ByName(objectRef.name);
+
+            if (ObjectInst == null) {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Missing Object");
                 return null;
             }
 
@@ -55,6 +65,9 @@ namespace DataWinLoad.Utils {
         }
 
         public static void AddEvents(UndertaleData data, UndertaleGameObject objectInst, Types.Object objectRef) {
+            if (objectRef.events == null) {
+                return;
+            }
             foreach (var ev in objectRef.events) {
                 var tp = Types.GetEventType(data, ev.eventType, ev.subtypeID);
                 EventType evType = tp.Item1;

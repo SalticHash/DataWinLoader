@@ -7,6 +7,7 @@ using static DataWinLoad.Utils.Types;
 namespace DataWinLoad.Utils {
     internal class Sprites {
         public static UndertaleSprite AddSprite(UndertaleData data, Types.Sprite sprite) {
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Adding Sprite {sprite.spriteName}");
 
             UndertaleSprite spriteObject = data.Sprites.ByName(sprite.spriteName);
@@ -44,6 +45,7 @@ namespace DataWinLoad.Utils {
 
         public static UndertaleEmbeddedTexture? AddTexture(UndertaleData data, Types.Texture texture) {
             var name = Path.GetFileName(texture.path);
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Adding Texture with sprite {name}");
 
             UndertaleEmbeddedTexture textureObject;
@@ -54,12 +56,14 @@ namespace DataWinLoad.Utils {
             string? workingDir = DataWinLoad.workingDir;
 
             if (DataWinLoad.workingDir == null) {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Working directory not set.");
                 return null;
             };
 
             var path = Path.GetFullPath(texture.path, DataWinLoad.workingDir);
             if (!File.Exists(path)) {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"File doesnt exist: {path}");
                 return null;
             }
@@ -75,12 +79,14 @@ namespace DataWinLoad.Utils {
         }
 
         public static UndertaleTexturePageItem? AddPageItem(UndertaleData data, Types.PageItem pageItem, string id) {
-            Console.WriteLine($"Adding PageItem that uses texture with id {pageItem.textureID}");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"Adding PageItem that uses texture with id \"{pageItem.textureID}\"");
 
             UndertaleEmbeddedTexture? texture;
             DataWinLoad.textureIDs.TryGetValue(pageItem.textureID, out texture);
 
             if (texture == null) {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Failed, texture not found.");
                 return null;
             }

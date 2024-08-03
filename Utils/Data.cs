@@ -14,9 +14,11 @@ namespace DataWinLoad.Utils {
         public static UndertaleData? LoadData(string filePath) {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Loading Data.win at {filePath}");
 
             if (!File.Exists(filePath)) {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("File (data.win) not found");
                 return null;
             }
@@ -26,6 +28,7 @@ namespace DataWinLoad.Utils {
             }
 
             stopwatch.Stop();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"Loading took {stopwatch.Elapsed}");
             return data;
         }
@@ -35,16 +38,20 @@ namespace DataWinLoad.Utils {
             Stopwatch stopwatch = new();
             stopwatch.Start();
 
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Saving Data.win at {filePath}");
 
             if (File.Exists(filePath) && DataWinLoad.config["defaultOverwrite"] != "true") {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("File exists.");
                 Console.WriteLine("Overwrite?");
                 string? answer = Console.ReadLine();
                 if (answer == null || answer != "yes") {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Procces ended.");
                     return;
                 } else {
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Overwriting.");
                 }
             }
@@ -53,6 +60,7 @@ namespace DataWinLoad.Utils {
 
             stopwatch.Stop();
 
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Saving took {stopwatch.Elapsed}, Press \"Any\" key to continue");
 
             //Console.ReadKey();

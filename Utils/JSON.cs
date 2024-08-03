@@ -10,9 +10,11 @@ namespace DataWinLoad.Utils {
     internal class JSON {
         // Load the json file
         public static Types.BuildJSON? LoadJson(string filePath) {
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"Loading json at {filePath}");
 
             if (!File.Exists(filePath)) {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("File (json) not found.");
                 return null;
             }
@@ -22,14 +24,17 @@ namespace DataWinLoad.Utils {
             var json = JsonSerializer.Deserialize<Types.BuildJSON>(jsonString);
 
             if (json.dataPath == null) {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Missing data.win path.");
                 return null;
             }
             if (json.outputDataPath == null) {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Missing output data.win path.");
                 return null;
             }
             if (json.workingDir == null) {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Missing working directory.");
                 return null;
             }
