@@ -4,6 +4,11 @@ This is meant to make development of mods for Game Maker Games easier!
 Normally you have to make your changes in the data.win and loose it all due to a corruption error.
 Now you can have your files separated and just load them in with a JSON file.
 
+With DataWinLoader you can just add the scripts, objects and sprites you need for the mod in a json, in it you condifute the path of the original `data.win` that you are modding, the path to the output resulting `data.win` and the working directory (The folder where your project resides)
+
+## JSON Format
+*In Progress*
+
 ## JSON Example
 ```json
 {
