@@ -6,9 +6,6 @@ Now you can have your files separated and just load them in with a JSON file.
 
 With DataWinLoader you can just add the scripts, objects and sprites you need for the mod in a json, in it you configure the path of the original `data.win` that you are modding, the path of the output resulting `data.win` and the working directory (The folder where your project resides)
 
-## JSON Format
-*In Progress*
-
 ## JSON Example
 ```json
 {
